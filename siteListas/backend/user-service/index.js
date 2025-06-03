@@ -1,11 +1,11 @@
 const express = require("express");
-const axios = require("axios");
+const axios = require("mongoose");
 const mongoose = require("mongoose");
 const cors = require("cors");  // Importa o CORS
 const app = express();
 
 // Habilita CORS para localhost:3000 (frontend React)
-app.use(cors({ origin: "http://localhost:5174" }));
+app.use(cors({ origin: "http://localhost:5173" }));
 
 app.use(express.json());
 
@@ -33,12 +33,6 @@ app.post("/usuarios", async (req, res) => {
     const user = new User(usuario);
     await user.save();
 
-    // // Notifica o order-service com dados do pedido
-    // await axios.post("http://localhost:4000/pedidos", {
-    //   userId: usuario.id,
-    //   produto: usuario.produto,
-    //   quantidade: usuario.quantidade
-    // });
 
     res.send({ message: "Usuário cadastrado!", usuario: user });
   } catch (error) {
