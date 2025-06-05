@@ -17,7 +17,6 @@ mongoose.connect(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true})
 
 // Definição do schema do usuário
 const userSchema = new mongoose.Schema({
-  id: String,
   email: String,
   senha: String,
 });

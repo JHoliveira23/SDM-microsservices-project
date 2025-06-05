@@ -6,42 +6,57 @@
 h1, h2, h3, h4, h5, h6 {
     font-family: Arial, Helvetica, sans-serif;
     color: #EFF7F7;
-    margin-left: 42px;
+    margin-left: 235px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 } 
 .areaLogin{
     display: flex;
     justify-content: center;
-    align-items: center;
     background-color: #161F2F;
-    height: 700px;
+    min-height: 100vh;
 }
 .box{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 350px;
     width: 800px;
-    border: 2px solid #ff00f2;
-    background-color: #0B0F17;
+    margin-top: 100px;
+    background-color: #0c121d;
+    border: 2px solid #EFF7F7;
+    box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.774);
+}
+.container-botoes{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    padding-left: 450px;
 }
 @media (max-width: 380px){
     .box{
         min-width: 260px;
     }
 }
-.elementosLogin{
-    font-family: Arial, Helvetica, sans-serif;
-    color: #EFF7F7;
-}
 input {
+    margin-top: 10px;
     height: 30px;
     background-color: #DDDDDD;
-    border-radius: 8px;
+    border: none;
+    margin-left: 200px;
 }
 button {
-    margin-top: 50px;
-    background-image: linear-gradient(to right, #5670F7, #FFFFFF);
+    margin: 10px;
+    padding: 5px;
+    background-color: #0B0F17;
+    color: #EFF7F7;
+    border: 2px solid white;
     height: 30px;
+    cursor: pointer;
+}
+button:active {
+    opacity: 0.5;
 }
 img {
     width: 100%;
