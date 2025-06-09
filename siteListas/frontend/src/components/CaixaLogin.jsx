@@ -30,6 +30,7 @@ export default function CaixaLogin(){
       alert("Erro ao cadastrar usuário.");
       console.error(error);
     }
+    <a href=""></a>
   };
     
     
