@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");  // Importa o CORS
 const app = express();
 
-// Habilita CORS para localhost:3000 (frontend React)
+const bcrypt = require('bcrypt');
+const modificador = 10;
+// Habilita CORS para localhost:5173 (frontend React)
 app.use(cors({ origin: "http://localhost:5173" }));
 
 app.use(express.json());
@@ -17,6 +19,7 @@ mongoose.connect(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true})
 
 // Definição do schema do usuário
 const userSchema = new mongoose.Schema({
+  nome: String,
   email: String,
   senha: String,
 });
@@ -24,18 +27,57 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 
 // Rota para cadastrar um usuário
-app.post("/usuarios", async (req, res) => {
+app.post("/cadastro", async (req, res) => {
+  
   try {
-    const usuario = req.body;
+    const {nome, email, senha} = req.body
+    console.log("nome", nome);
+    console.log("email", email);
+    console.log("senha", senha);
+   const hashedSenha = await bcrypt.hash(senha, modificador);
 
     // Salva o usuário no banco
-    const user = new User(usuario);
+    const user = new User({nome, email, senha: hashedSenha});
     await user.save();
 
 
-    res.send({ message: "Usuário cadastrado!", usuario: user });
+    res.status(201).send({ message: "Usuário cadastrado!", usuario: user });
   } catch (error) {
     res.status(500).send({ error: "Erro ao cadastrar usuário" });
+  }
+});
+
+// Rota para autenticar Login do usuário
+app.post("/login", async (req, res) => {
+  
+  try {
+    const {email, senha} = req.body;
+    console.log("email recebido", email);
+    console.log("senha recebida", senha);
+    
+    
+    const user = await User.findOne({ email });
+    console.log("usuário encontrado", user);
+    
+    
+    if(!user) {
+      return res.status(401).json({ message: 'Usuário não encontrado'});
+    } 
+    if(!user.senha){
+      return res.status(500).json({ message: 'Senha não encontrada para o usuário'});
+    }
+    const isSenhaCorreta = await bcrypt.compare(senha, user.senha);
+    console.log("comparação de senha", isSenhaCorreta);
+    
+
+    if(!isSenhaCorreta) {
+      return res.status(401).json({ message: 'Senha incorreta'});
+    }
+
+    res.status(200).send({ message: "Login realizado com sucesso!", usuario: user });
+  } catch (error) {
+    console.log("erro no login", error);
+    res.status(500).json ({ message: "Erro ao autenticar o usuário", error: error.message})
   }
 });
 

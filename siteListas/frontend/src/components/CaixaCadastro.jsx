@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export default function CaixaCadastro(){
+     const [nome, setNome] = useState("");
      const [email, setEmail] = useState("");
      const [senha, setSenha] = useState("");
 
@@ -14,15 +15,16 @@ export default function CaixaCadastro(){
     
     try {
       // Monta o objeto usuário para enviar para o backend
-      const usuario = {email, senha};
+      const usuario = {nome, email, senha};
       
         // Chama o User-Service para cadastrar usuário e gerar pedido
-      const response = await axios.post("http://localhost:3002/usuarios", usuario);
+      const response = await axios.post("http://localhost:3002/cadastro", usuario);
       console.log(usuario);
       
-      //alert("Usuário cadastrado com sucesso!");
+      alert("Usuário cadastrado com sucesso!");
       
       // Limpa o formulário
+      setNome("");
       setEmail("");
       setSenha("");
    }catch (error) {
@@ -42,7 +44,7 @@ export default function CaixaCadastro(){
                 <form onSubmit={handleSubmit}>
                     <h1>Cadastro</h1>
                     <div>
-                        <input type="text" placeholder="Nome de usuário" value={senha} onChange={e => setSenha(e.target.value)}/>
+                        <input type="text" placeholder="Nome de usuário" value={nome} onChange={e => setNome(e.target.value)}/>
                     </div>
                     <div>
                         <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />

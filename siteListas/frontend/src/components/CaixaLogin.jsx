@@ -1,42 +1,45 @@
 import "../styles/CaixaCadastro.css"
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 export default function CaixaLogin(){
      const [email, setEmail] = useState("");
      const [senha, setSenha] = useState("");
-   
+
+     const navigate = useNavigate();
     // Função para enviar o formulário
-    const handleSubmit = async (e) => {
+    const handleEntrar = async (e) => {
     e.preventDefault();
 
     try {
       // Monta o objeto usuário para enviar para o backend
       const usuario = {email, senha};
     // Chama o User-Service para cadastrar usuário e gerar pedido
-      const response = await axios.post("http://localhost:3002/usuarios", usuario);
+      const response = await axios.post("http://localhost:3002/login", usuario);
       console.log(usuario);
       
-      //alert("Usuário cadastrado com sucesso!");
+      alert("Usuário autenticado com sucesso!");
       
       // Limpa o formulário
       setEmail("");
       setSenha("");
+      navigate("/mainpage");
     } catch (error) {
-      alert("Erro ao cadastrar usuário.");
-      console.error(error);
+      console.error("erro:", error.response.data);
+      alert("Erro ao autenticar usuário.");
+      
     }
   
   };
-    
     
     return (
         <> 
         <div className="areaLogin">
             <div ></div>
             <div className="box">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleEntrar}>
                     <h1>Login</h1>
                     <div>
                         <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
