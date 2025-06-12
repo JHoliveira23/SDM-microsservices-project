@@ -1,0 +1,60 @@
+/* h1, h2, h3, h4, h5, h6 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    margin-left: 235px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}  */
+.bloco-bemvindo{
+    display: inline-block;
+    position: relative;
+    display: flex; 
+    flex-direction: row;
+    margin-top: 50px;
+    width: 100%;
+    height: 500px;
+    background-color: #211F1F;
+}
+.tituloHome{
+    position: absolute;
+    margin-top: 70px;
+    margin-left: 200px;
+    width: 800px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 70px;
+}
+p.mensagemInicial{
+    position: absolute;
+    margin-top: 270px;
+    margin-left: 200px;
+    width: 1000px;
+    
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 28px;
+    text-align: justify;
+}
+button.comecar {
+    position: absolute;
+    width: 150px;
+    height: 45px;
+    padding: 1px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: #E6E7FF;
+    color: #000000;
+    margin-top: 400px;
+    margin-left: 230px;
+}
+img.homeBackground {
+    opacity: 5%;
+    width: 1905px;
+    height: 500px;
+}
+b
+
+footer.home{
+    margin-top: 500px;
+}
+

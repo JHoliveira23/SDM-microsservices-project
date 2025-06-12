@@ -1,0 +1,38 @@
+
+
+nav{
+    background-color: #211F1F;
+    height: 70px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.containerNavBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo-home{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    color: #FFFFFF;
+}
+button.sobre-home{
+    font-size: 15px;
+    border: none;
+    background-color: #211F1F;
+}
+button.entrar-home{
+    font-size: 20px;
+    border: none;
+    background-color: #211F1F;
+}
+button.cadastre-se-home{
+    width: 150px;
+    height: 45px;
+    padding: 1px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: #E6E7FF;
+    color: #000000;
+}

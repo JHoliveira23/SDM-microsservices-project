@@ -1,12 +1,15 @@
+import CaixaCadastro from './components/CaixaCadastro'
 
-import CaixaLogin from "./components/CaixaLogin"
+// Reaproveitamento de estruturas
+import { Outlet } from 'react-router-dom'
+
 
 function App() {
   
 
   return (
     <>
-      <CaixaLogin></CaixaLogin>
+      <Outlet/>
     </>
   )
 }
