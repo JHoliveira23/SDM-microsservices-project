@@ -16,20 +16,22 @@ export default function CaixaLogin(){
     try {
       // Monta o objeto usuário para enviar para o backend
       const usuario = {email, senha};
-    // Chama o User-Service para cadastrar usuário e gerar pedido
+    // Chama o User-Service para receber o email e senha usuário e verificar as conformidades
       const response = await axios.post("http://localhost:3002/login", usuario);
       console.log(usuario);
       
       alert("Usuário autenticado com sucesso!");
       
+      const tokenRecebido = response.data.token;
+      localStorage.setItem('token', tokenRecebido); 
+
       // Limpa o formulário
       setEmail("");
       setSenha("");
       navigate("/mainpage");
     } catch (error) {
-      console.error("erro:", error.response.data);
+      console.error("erro:", error);
       alert("Erro ao autenticar usuário.");
-      
     }
   
   };

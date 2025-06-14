@@ -20,7 +20,7 @@ const listSchema = new mongoose.Schema({
   titulo: String,
   quantidade: Number,
   jogos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Jogo'}],
-  usuario: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+  usuario: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 const List = mongoose.model("List", listSchema);
@@ -35,7 +35,7 @@ app.post("/lists", async (req, res) => {
     console.log("jogos", jogos);
     console.log("usuario", usuario );
     
-    // Salva o usuário no banco
+    // Salva a lista no banco de dados
     const list = new List({titulo, quantidade, jogos, usuario});
     await list.save();
     res.status(201).send({ message: "Lista criada!", lista: list });
@@ -47,8 +47,8 @@ app.post("/lists", async (req, res) => {
 // Rota para apresentar as listas para o usuário
 app.get("/lists", async (req, res) => {
   try {
-    const lists = await lists.find();
-    console.log("Usuários cadastrados:", lists); // Exibe no console
+    const lists = await List.find({usuario: user});
+    console.log("Listas criadas:", lists); // Exibe no console
     res.send(lists);
   } catch (error) {
     res.status(500).send({ error: "Erro ao buscar as listas" });
@@ -85,4 +85,4 @@ app.delete("/list/:id", async (req, res) => {
   }
 });
 
-app.listen(3003, () => console.log("User-Service rodando na porta 3003"));
+app.listen(3003, () => console.log("List-Service rodando na porta 3003"));

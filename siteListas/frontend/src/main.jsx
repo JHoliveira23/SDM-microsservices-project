@@ -10,7 +10,7 @@ import MainPage from './routes/MainPage.jsx';
 import CadastroPage from './routes/CadastroPage.jsx';
 import LoginPage from './routes/LoginPage.jsx';
 import ErrorPage from './routes/ErrorPage.jsx';
-
+import ProtectedRoute from "./routes/ProtectedRoute.jsx"
 
 const router = createBrowserRouter([
   {
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: "mainpage",
-        element: <MainPage/>
+        element: <ProtectedRoute><MainPage/></ProtectedRoute> 
       }
    ] 
   }

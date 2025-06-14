@@ -16,6 +16,7 @@ export default function Home(){
                 <p className='mensagemInicial'>Construa suas listas de jogos e compartilhe com seus amigos, faça lista dos seus melhores RPG,  lista de jogos que você mais quer jogar, lista de jogos que você já jogou, e muito mais. São diversas possibilidades.</p>
                 <button className='comecar'>Começar</button>
             </div>
+            
             <footer className='home'>Footer</footer>
         </>
     )

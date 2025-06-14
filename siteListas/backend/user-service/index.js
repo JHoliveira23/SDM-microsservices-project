@@ -3,7 +3,7 @@ const axios = require("mongoose");
 const mongoose = require("mongoose");
 const cors = require("cors");  // Importa o CORS
 const app = express();
-
+const jwt = require ('jsonwebtoken'); 
 const bcrypt = require('bcrypt');
 const modificador = 10;
 // Habilita CORS para localhost:5173 (frontend React)
@@ -36,7 +36,7 @@ app.post("/cadastro", async (req, res) => {
     console.log("senha", senha);
    const hashedSenha = await bcrypt.hash(senha, modificador);
 
-    // Salva o usuário no banco
+    // Salva o usuário no banco de dados
     const user = new User({nome, email, senha: hashedSenha});
     await user.save();
 
@@ -69,10 +69,19 @@ app.post("/login", async (req, res) => {
     const isSenhaCorreta = await bcrypt.compare(senha, user.senha);
     console.log("comparação de senha", isSenhaCorreta);
     
-
     if(!isSenhaCorreta) {
-      return res.status(401).json({ message: 'Senha incorreta'});
-    }
+          return res.status(401).json({ message: 'Senha incorreta'});
+        }
+    
+    const token = jwt.sign(
+      {
+        id: user._id, email: user.email },
+        'ChaveSecreta123SuperLista',
+        { expiresIn: '1h'}
+    )
+    res.json({token});
+
+    
 
     res.status(200).send({ message: "Login realizado com sucesso!", usuario: user });
   } catch (error) {
@@ -81,9 +90,29 @@ app.post("/login", async (req, res) => {
   }
 });
 
+function autenticarToken(req, res, next){
+  const authHeader = req.headers['authorization'];
+
+  const token  = authHeader && authHeader.split(' ')[1];
+
+  if(!token){
+    return res.status(401).json({mensagem: 'Token não enviado'});
+  }
+
+  jwt.verify(token, 'ChaveSecreta123SuperLista', (error, user) => {
+    if(error) {
+      return res.status(403).json({ mensagem: 'Token inválido'});
+    }
+    req.user = user;
+    next();
+  })
+}
+
+
 // Rota para listar todos os usuários
-app.get("/usuarios", async (req, res) => {
+app.get("/usuarios", autenticarToken, async (req, res) => {
   try {
+    res.json({ mensagem: 'Você está autenticado!', usuario: req.user})
     const usuarios = await User.find();
     console.log("Usuários cadastrados:", usuarios); // Exibe no console
     res.send(usuarios);

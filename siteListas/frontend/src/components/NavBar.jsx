@@ -16,8 +16,8 @@ export default function NavBar(){
                 </div>
                 <div>
                     <button onClick={handleClick} className="sobre-home">Sobre</button>
-                    <Link to="/loginPage"><button className="entrar-home">Entrar</button></Link>
-                    <Link to="/cadastroPage"><button className="cadastre-se-home">Cadastre-se</button></Link>
+                    <Link to="/loginpage"><button className="entrar-home">Entrar</button></Link>
+                    <Link to="/cadastropage"><button className="cadastre-se-home">Cadastre-se</button></Link>
                 </div>
            </nav>
            <div className="bloco-bem vindo">
