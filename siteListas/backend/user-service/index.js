@@ -31,10 +31,7 @@ app.post("/cadastro", async (req, res) => {
   
   try {
     const {nome, email, senha} = req.body
-    console.log("nome", nome);
-    console.log("email", email);
-    console.log("senha", senha);
-   const hashedSenha = await bcrypt.hash(senha, modificador);
+    const hashedSenha = await bcrypt.hash(senha, modificador);
 
     // Salva o usuário no banco de dados
     const user = new User({nome, email, senha: hashedSenha});
@@ -52,8 +49,7 @@ app.post("/login", async (req, res) => {
   
   try {
     const {email, senha} = req.body;
-    console.log("email recebido", email);
-    console.log("senha recebida", senha);
+   
     
     
     const user = await User.findOne({ email });
@@ -74,8 +70,7 @@ app.post("/login", async (req, res) => {
         }
     
     const token = jwt.sign(
-      {
-        id: user._id, email: user.email },
+      {_id: user._id},
         'ChaveSecreta123SuperLista',
         { expiresIn: '1h'}
     )

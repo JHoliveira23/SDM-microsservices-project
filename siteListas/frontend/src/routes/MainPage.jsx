@@ -1,74 +1,153 @@
-import React, { useEffect, useState} from "react";
-import { Link } from "react-router-dom";
-import "../styles/MainPage.css"
-import axios from "axios"
-import NavBar from "../components/NavBar"
+    import React, { useEffect, useState} from "react";
+    import { Link, useNavigate } from "react-router-dom";
+    import "../styles/MainPage.css"
+    import axios from "axios"
+    import NavBar from "../components/NavBar"   
 
-export default function MainPage(){
+    export default function MainPage(){
 
-    // Estado para guardar os jogos buscados
-    const [games, setGames] = useState([]);
-    const [isActive, setIsActive] = useState();
+        // UseState
+        const [games, setGames] = useState([]);
+        const [isActive, setIsActive] = useState(false);
+        const [jogoSelecionado, setJogoSelecionado] = useState(null);
+        const [lists, setLists] = useState([]);
+        const [isActivedModalNovaLista, setIsActivedModalNovaLista] = useState(false)
+        const [nomeNovaLista, setNomeNovaLista] = useState('')
 
-    useEffect(() => {
-        //função para buscar jogos na API
-        async function fetchGames() {
-            try {
-                const response = await axios.get("http://localhost:3004/games");
-                setGames(response.data);
-            } catch (error){
-                console.error("Erro ao buscar os jogos", error);
-            }   
-        }
-        fetchGames();
-    }, []); 
 
-    // async function handleAddToList(e){
-    //     e.preventDefault();
-
-    //     const game = {_id}
-    //     try{
-    //     // Monta o objeto usuário para enviar para o backend
-      
-    //     // Chama o List-Service para cadastrar usuário e gerar pedido
-    //   const response = await axios.post("http://localhost:3002/games", game);
-    //   console.log(game);
-      
-    //   alert("game cadastrado com sucesso!");
-      
-    //   }catch (error) {
-    //   alert("Erro ao cadastrar usuário.");
-    //   console.error(error);
-    // }
-
-    //     }
-
-    return(
-        <body className="catalogo">
-                <h1>Página Principal das suas Listas!!!</h1>
-            {games.map((game) => (
-                <div className key={game._id || game.id}>
-                <div>
-                    <h2 className="jogos">{game.nome}</h2>
-                    <img className="jogos" src={game.img} alt={game.nome} />
-                    <p className="jogos"> Sobre: {game.desc}</p>
-                    <p className="jogos">R$ {game.preco}</p>
-                    <p className="jogos">Categoria: {game.categoria}</p>
-                    <button>Adicionar à uma lista</button>
-                </div>   
-                </div>
-                ))
+        const navigate = useNavigate();
+        // função para apresentar os jogos na tela 
+        useEffect(() => {
+            //função para buscar jogos na API
+            async function fetchGames() {
+                try {
+                    const response = await axios.get("http://localhost:3004/games");
+                    setGames(response.data);
+                } catch (error){
+                    console.error("Erro ao buscar os jogos", error);
+                }   
             }
-            <button onClick={() => setIsActive(true)}>Criar uma lista</button>
-            <Link to="/">Home</Link>
+            fetchGames();
+        }, []); 
 
-            {isActive && (
-            <div className="caixa">
-                <div>AAAAAAAAAAAAAA</div>
-                <button onClick={() => setIsActive(false)}></button>
-            </div>
-            )}
+        // função para adicionar jogo à lista
+        const handleAddToList = async(listId, listTitulo) =>{
+            try{
+            // Monta o objeto usuário para enviar para o backend
+            const game = {
+                gameId: jogoSelecionado
+            }
+            const token = localStorage.getItem('token');
+            // Chama o List-Service para cadastrar usuário e gerar pedido
+            const response = await axios.put(`http://localhost:3003/lists/${listId}/adicionarGame`, game,
+                {headers: { Authorization: `Bearer ${token}`}}
+            );
+            alert(`jogo adicionado à lista ${listTitulo}`);
+            setIsActive(false)
+            }catch (error) {
+            alert("Erro ao adicionar esse jogo à lista");
+            console.error(error);
+        }
+        }
+        useEffect(() =>{
+                    async function fetchLists(){
+                        if (isActive) {
+                        try {
+                            const token = localStorage.getItem("token")
+                            const response = await axios.get("http://localhost:3003/lists", {
+                            headers: { Authorization: `Bearer ${token}`}
+                            })
+                            setLists(response.data)
+                        } catch (error) { 
+                            console.error("Erro ao buscar as listas", error);      
+                        }
+                        }
+                    }
+                    fetchLists();
+                }, [isActive])
             
-        </body>
-    )
-}
+        const abrirModalComListas = async(idGame) => {
+            setJogoSelecionado(idGame);
+            setIsActive(true);
+        } 
+
+        const abrirModalNovaLista = async() => {
+            setIsActivedModalNovaLista(true);
+        }
+        const createNewList = async(e) =>{
+            e.preventDefault() ;
+            
+            try{
+            // Monta o objeto usuário para enviar para o backend
+            const novaLista = {
+                titulo: nomeNovaLista,
+                jogos: [jogoSelecionado]
+            }
+            const token = localStorage.getItem('token');
+            // Chama o List-Service para cadastrar usuário e gerar pedido
+            await axios.post("http://localhost:3003/lists", 
+                novaLista, {headers:{Authorization: `Bearer ${token}`}});
+            
+            setNomeNovaLista("")
+            setIsActivedModalNovaLista(false);
+            setIsActive(false);
+            alert("nova lista criada com sucesso");
+            }catch (error) {
+            alert("Erro ao criar a lista.");
+            console.error(error);
+        }
+        }
+        return(
+            <div className="catalogo">
+                    <h1>Página Principal das suas Listas!!!</h1>
+                    <button onClick={() => navigate("/minhaslistas")}>Minhas listas</button>
+                {games.map((game) => (
+                    <div key={game._id || game.id}>
+                    <div>
+                        <h2 className="jogos">{game.nome}</h2>
+                        <img className="jogos" src={game.img} alt={game.nome} />
+                        <p className="jogos"> Sobre: {game.desc}</p>
+                        <p className="jogos">R$ {game.preco}</p>
+                        <p className="jogos">Categoria: {game.categoria}</p>
+                        <button onClick={() => abrirModalComListas(game._id)}>Adicionar à uma lista</button>
+                    </div>   
+                    </div>
+                    ))
+                }
+
+                <Link to="/">Home</Link>
+                
+                {isActive && (
+                <div className="caixa">
+                        <div>ihaaaaaa</div>
+                        <button onClick={() => setIsActive(false)}></button>
+                    {lists.map((list) => (
+                    <div key={list._id || list.id}>
+                        <div>
+                            <button onClick={() => handleAddToList(list._id, list.titulo)}><h2 className="jogos">{list.titulo}</h2></button>
+                        </div>   
+                    </div>))
+                    }
+                    <div>
+                        <button onClick={() => abrirModalNovaLista()}>Nova Lista</button>
+                    </div>
+                </div>
+                )}
+
+                {isActivedModalNovaLista && (
+                    <div>
+                        <form onSubmit={createNewList}>
+                            <h1>Nova Lista</h1>
+                                <div>
+                                    <input type="text" placeholder="Insira um nome" value={nomeNovaLista} onChange={e => setNomeNovaLista(e.target.value)}/>
+                                </div>
+                                    <div className="container-botoes">
+                                    <button type="submit">Confirmar</button>
+                                    </div>  
+                        </form>
+                    </div>
+                )}
+                
+            </div>
+        )
+    }

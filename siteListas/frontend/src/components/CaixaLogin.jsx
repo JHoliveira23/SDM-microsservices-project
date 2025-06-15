@@ -23,12 +23,12 @@ export default function CaixaLogin(){
       alert("Usuário autenticado com sucesso!");
       
       const tokenRecebido = response.data.token;
-      localStorage.setItem('token', tokenRecebido); 
+      localStorage.setItem('token', tokenRecebido);
 
+      navigate("/mainpage");
       // Limpa o formulário
       setEmail("");
-      setSenha("");
-      navigate("/mainpage");
+      setSenha("");  
     } catch (error) {
       console.error("erro:", error);
       alert("Erro ao autenticar usuário.");

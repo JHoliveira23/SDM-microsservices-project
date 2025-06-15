@@ -11,6 +11,9 @@ import CadastroPage from './routes/CadastroPage.jsx';
 import LoginPage from './routes/LoginPage.jsx';
 import ErrorPage from './routes/ErrorPage.jsx';
 import ProtectedRoute from "./routes/ProtectedRoute.jsx"
+import MinhasListas from "./routes/MinhasListas.jsx"
+import ListaPage from "./routes/ListaPage.jsx"
+
 
 const router = createBrowserRouter([
   {
@@ -24,16 +27,24 @@ const router = createBrowserRouter([
         element: <Home/>
       },
       {
-        path: "cadastropage",
+        path: "/cadastropage",
         element: <CadastroPage/>
       },
       {
-        path: "loginpage",
+        path: "/loginpage",
         element: <LoginPage/>
       },
       {
-        path: "mainpage",
+        path: "/mainpage",
         element: <ProtectedRoute><MainPage/></ProtectedRoute> 
+      },
+      {
+        path: "/minhaslistas",
+        element: <ProtectedRoute><MinhasListas/></ProtectedRoute>
+      },
+      {
+        path: "/minhaslistas/:id",
+        element: <ProtectedRoute><ListaPage/></ProtectedRoute>
       }
    ] 
   }
