@@ -58,7 +58,39 @@ app.post("/lists", autenticarToken, async (req, res) => {
     res.status(500).send({ error: "Erro ao criar a lista" });
   }
 });
+app.get('/lists/:id', autenticarToken, async (req, res) => {
+  
+  
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "ID inválido" });
+  }
+  try {
+    const list = await List.findOne({_id: req.params.id, usuario: req.user._id});
+    if (!list) {
+      return res.status(404).json({ error: "Lista não encontrada "});
+    }
+    console.log("IDs dos jogos que estou enviando:", list.jogos);
 
+
+    let infosGames = [];
+    if(list.jogos.length > 0) {
+      const response = await axios.get("http://localhost:3004/games/byIds", {
+      params: { ids: list.jogos.join(',')}
+    })
+      infosGames = response.data;
+    }
+    
+    res.send ({
+      _id: list._id,
+      titulo: list.titulo,
+      usuario: list.usuario,
+      jogos: infosGames
+    })
+    console.log("Lista encontrada", list);
+  } catch (error) {
+    res.status(500).send({ error: "Erro ao buscar a lista"})
+  }
+})
 // Rota para apresentar as listas para o usuário
 app.get("/lists", autenticarToken, async (req, res) => {
   try {
@@ -70,12 +102,11 @@ app.get("/lists", autenticarToken, async (req, res) => {
   }
 });
 
-
+// Rota PUT para adicionar um jogo à uma lista
 
 app.put("/lists/:id/adicionarGame", autenticarToken, async (req, res) => {
   const { gameId } = req.body;
-  const usuario = req.user.id;
-  const listId = req.params.id;
+  const usuario = req.user._id;
   try{
     const listaAtualizada = await List.findByIdAndUpdate(
       {_id: req.params.id, usuario}, {$push: {jogos: gameId}},
@@ -90,12 +121,33 @@ app.put("/lists/:id/adicionarGame", autenticarToken, async (req, res) => {
   }
 })
 
-// Rota PUT para adicionar jogos a uma lista existente
-app.put("/list/:id", async (req, res) => {
+// Rota PUT para remover um jogo da lista
+
+app.put("/lists/:id/removerGame", autenticarToken, async(req, res) => {
+  const { gameId } = req.body;
+  const usuario = req.user._id;
+  try{
+    const listaAtualizada = await List.findByIdAndUpdate(
+      {_id: req.params.id, usuario}, {$pull: {jogos: gameId}},
+      {new: true}
+    )
+    if(!listaAtualizada){
+      return res.status(404).send({ error: "Lista não encontrada"})
+    }
+    res.send({message: "Jogo removido da lista com sucesso!", lista: listaAtualizada})
+  } catch(error) {
+    res.status(500).send({error: "Erro ao remover o jogo dessa lista"})
+  }
+})
+
+// Rota PUT para editar o título de uma lista existente
+
+app.put("/lists/:id", autenticarToken, async (req, res) => {
+  const {titulo} = req.body
   try {
     const listaAtualizada = await List.findOneAndUpdate(
-      { _id: req.params.id },
-      req.body,
+      { _id: req.params.id, usuario},
+      {titulo},
       { new: true }
     );
     if (!listaAtualizada) {
@@ -107,12 +159,15 @@ app.put("/list/:id", async (req, res) => {
   }
 });
 
+
+
 // Rota DELETE para excluir uma lista
-app.delete("/list/:id", async (req, res) => {
+app.delete("/lists/:id", autenticarToken, async (req, res) => {
+  const usuario = req.user._id;
   try {
-    const resultado = await List.findOneAndDelete({ _id: req.params.id });
-    if (!resultado) {
-      return res.status(404).send({ error: "Lista não encontrada"});
+    const resultado = await List.findOneAndDelete({ _id: req.params.id, usuario});
+    if (!resultado) { 
+      return res.status(404).send({ error: "Lista não encontrada ou você não tem autorização para excluir esta lista"});
     }
     res.send({ message: "Lista excluída com sucesso!" });
   } catch (error) {

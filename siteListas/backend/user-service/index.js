@@ -1,5 +1,4 @@
 const express = require("express");
-const axios = require("mongoose");
 const mongoose = require("mongoose");
 const cors = require("cors");  // Importa o CORS
 const app = express();

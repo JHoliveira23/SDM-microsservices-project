@@ -38,20 +38,20 @@ export default function CaixaLogin(){
     
     return (
         <> 
+        <div><Link to="/"><button>Voltar</button></Link></div>
         <div className="areaLogin">
-            <div ></div>
+            
             <div className="box">
                 <form onSubmit={handleEntrar}>
-                    <h1>Login</h1>
+                    <h1 className="login">Login</h1>
                     <div>
                         <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
                     </div>
                     <div>
-                        <input type="text" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)}  />
+                        <input type="password" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)}  />
                     </div>
                     <div className="container-botoes">
-                        <button type="submit">Entrar</button>
-                        <Link to="/"><button>Voltar</button></Link>
+                        <button className="button-confirmar" type="submit">Entrar</button>
                     </div>  
                 </form>
             </div>    

@@ -6,7 +6,7 @@
 h1, h2, h3, h4, h5, h6 {
     font-family: Arial, Helvetica, sans-serif;
     color: #EFF7F7;
-    margin-left: 235px;
+    margin-left: 45px;
     margin-top: 20px;
     margin-bottom: 20px;
 } 
@@ -28,11 +28,23 @@ h1, h2, h3, h4, h5, h6 {
     border: 2px solid #EFF7F7;
     box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.774);
 }
+h1.login {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #EFF7F7;
+    margin-left: 45px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+h1.cadastro {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #EFF7F7;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 .container-botoes{
     display: flex;
     flex-direction: row;
-    justify-content: end;
-    padding-left: 450px;
 }
 @media (max-width: 380px){
     .box{
@@ -45,7 +57,6 @@ input {
     background-color: #DDDDDD;
     border-radius: 3px;
     border-color: #FFFFFF;
-    margin-left: 200px;
     padding: 3px;
 }
 button {
@@ -59,6 +70,9 @@ button {
 }
 button:active {
     opacity: 0.5;
+}
+button.button-confirmar {
+    width: 150px;
 }
 img {
     width: 100%;

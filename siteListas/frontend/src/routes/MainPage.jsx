@@ -14,7 +14,7 @@
         const [isActivedModalNovaLista, setIsActivedModalNovaLista] = useState(false)
         const [nomeNovaLista, setNomeNovaLista] = useState('')
 
-
+        
         const navigate = useNavigate();
         // função para apresentar os jogos na tela 
         useEffect(() => {
@@ -39,7 +39,7 @@
             }
             const token = localStorage.getItem('token');
             // Chama o List-Service para cadastrar usuário e gerar pedido
-            const response = await axios.put(`http://localhost:3003/lists/${listId}/adicionarGame`, game,
+            await axios.put(`http://localhost:3003/lists/${listId}/adicionarGame`, game,
                 {headers: { Authorization: `Bearer ${token}`}}
             );
             alert(`jogo adicionado à lista ${listTitulo}`);
@@ -99,7 +99,8 @@
         }
         return(
             <div className="catalogo">
-                    <h1>Página Principal das suas Listas!!!</h1>
+                    <h1>Catalogo com centenas de jogos</h1>
+                    <button onClick={() => navigate("/")}>Início</button>
                     <button onClick={() => navigate("/minhaslistas")}>Minhas listas</button>
                 {games.map((game) => (
                     <div key={game._id || game.id}>
@@ -118,19 +119,36 @@
                 <Link to="/">Home</Link>
                 
                 {isActive && (
-                <div className="caixa">
-                        <div>ihaaaaaa</div>
-                        <button onClick={() => setIsActive(false)}></button>
+                <div className="modal">
+                    <button onClick={() => 
+                    {setIsActive(false);
+                    setIsActivedModalNovaLista(false);
+                    }}>X</button>
+                        <h2 className="titulo-modal">Selecione uma lista</h2>
+                        
                     {lists.map((list) => (
                     <div key={list._id || list.id}>
                         <div>
-                            <button onClick={() => handleAddToList(list._id, list.titulo)}><h2 className="jogos">{list.titulo}</h2></button>
+                            <button className="button-modal" onClick={() => handleAddToList(list._id, list.titulo)}><h2 className="lista-modal">{list.titulo}</h2></button>
                         </div>   
                     </div>))
                     }
                     <div>
                         <button onClick={() => abrirModalNovaLista()}>Nova Lista</button>
                     </div>
+                    {isActivedModalNovaLista && (
+                    <div>
+                        <form onSubmit={createNewList}>
+                            <h1>Nova Lista</h1>
+                                <div>
+                                    <input type="text" placeholder="Insira um nome" value={nomeNovaLista} onChange={e => setNomeNovaLista(e.target.value)}/>
+                                </div>
+                                    <div className="container-botoes">
+                                    <button type="submit">Confirmar</button>
+                                    </div>  
+                        </form>
+                    </div>
+                )}
                 </div>
                 )}
 

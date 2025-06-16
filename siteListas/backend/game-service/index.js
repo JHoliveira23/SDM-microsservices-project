@@ -1,5 +1,4 @@
 const express = require("express");
-const axios = require("mongoose");
 const mongoose = require("mongoose");
 const cors = require("cors");  // Importa o CORS
 const app = express();
@@ -31,12 +30,6 @@ app.post("/games", async (req, res) => {
   
   try {
     const {nome, img, desc, preco, categoria} = req.body
-    console.log("nome", nome);
-    console.log("imagem", img);
-    console.log("desc", desc);
-    console.log("preco", preco);
-    console.log("categoria", categoria);
-    
     // Salva o jogo no banco de dados
     const game = new Game({nome, img, desc, preco, categoria});
     await game.save();
@@ -45,6 +38,22 @@ app.post("/games", async (req, res) => {
     res.status(500).send({ error: "Erro ao criar um jogo" });
   }
 });
+
+app.get("/games/byIds", async (req, res) => {
+  const ids = req.query.ids.split(",");
+
+  try{
+    const games = await Game.find({
+      _id: { $in: ids}
+    })
+    res.send(games);
+  } catch(error) {
+    console.error(error);
+    res.status(500).send({ error: "Erro ao buscar os jogos dessa lista"})
+  }
+
+})
+
 
 // Rota GET para apresentar os jogos para o usuário
 app.get("/games", async (req, res) => {

@@ -1,5 +1,5 @@
 import "../styles/CaixaCadastro.css"
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,7 @@ export default function CaixaCadastro(){
       const usuario = {nome, email, senha};
       
         // Chama o User-Service para cadastrar usuário e gerar pedido
-      const response = await axios.post("http://localhost:3002/cadastro", usuario);
+      await axios.post("http://localhost:3002/cadastro", usuario);
       console.log(usuario);
       
       alert("Usuário cadastrado com sucesso!");
@@ -38,11 +38,11 @@ export default function CaixaCadastro(){
     
     return (
         <> 
+        <div><Link to="/"><button>Voltar</button></Link></div>
         <div className="areaLogin">
-            <div></div>
             <div className="box">
                 <form onSubmit={handleSubmit}>
-                    <h1>Cadastro</h1>
+                    <h1 className="cadastro">Cadastro</h1>
                     <div>
                         <input type="text" placeholder="Nome de usuário" value={nome} onChange={e => setNome(e.target.value)}/>
                     </div>
@@ -50,12 +50,11 @@ export default function CaixaCadastro(){
                         <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
                     </div>
                     <div>
-                        <input type="text" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)}  />
+                        <input type="password" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)}  />
                     </div>
                     
                     <div className="container-botoes">
-                        <button type="submit">Cadastrar</button>
-                        <Link to="/"><button>Voltar</button></Link>
+                        <button className="button-confirmar" type="submit">Cadastrar</button>
                     </div>  
                 </form>
             </div>    

@@ -1,0 +1,19 @@
+h1.listaPage {
+    color: black;
+}
+h2.listaPage {
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.caixa{
+    position: fixed;
+    min-height: 150px;
+    top: 25%;
+    left: 20%;   
+    background-color:#776f6f;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0,4);
+    z-index: 1000;
+}

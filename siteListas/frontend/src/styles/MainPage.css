@@ -1,5 +1,10 @@
 .catalogo {
     background-color: #211F1F;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
 }
 .tituloMainPage{
     color: rgb(255, 255, 255);
@@ -7,22 +12,74 @@
     font-size: 12px;
 }
 p.jogos {
+    margin-top: 10px;
     color: rgb(255, 255, 255);
-    font-family: 'Courier New', Courier, monospace;
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 600px;
     font-size: 15px;
 }
 h2.jogos {
     color: rgb(255, 255, 255);
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 30px;
+    font-size: 25px;
 }
 img.jogos {
+    border: none;
+    border-radius: 10px;
     margin-left: 20px;
     width: 300px;
     height: 200px;
 }
 .caixa {
-    border: 2px solid red;
     width: 500px;
     height: 500px;
 }
+.modal {
+    position: fixed;
+    min-height: 150px;
+    top: 12%;
+    left: 9%;   
+    background-color: #776f6f;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0,4);
+    z-index: 1000;
+}
+.titulo-modal{
+    margin-left: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+}
+.lista-modal{
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 10px;
+}
+.button-listas{
+    background-color: #211F1F;
+    width: 400px;
+    border: 2px solid #211F1F;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.button-modal{
+    background-color: #211F1F; 
+    width: 200px;
+    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.button-delete{
+    margin-left: 410px;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(255, 69, 69);
+}
+
