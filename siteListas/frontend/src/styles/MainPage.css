@@ -4,7 +4,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
 }
 .tituloMainPage{
     color: rgb(255, 255, 255);
@@ -39,7 +38,7 @@ img.jogos {
     min-height: 150px;
     top: 12%;
     left: 9%;   
-    background-color: #776f6f;
+    background-color: #636363;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0,0,0,0,4);
@@ -56,14 +55,14 @@ img.jogos {
     margin-left: 10px;
 }
 .button-listas{
-    background-color: #211F1F;
+    background-color: #2b2b2b;
     width: 400px;
     border: 2px solid #211F1F;
     display: flex;
     overflow: hidden;
+    white-space: nowrap;
     align-items: center;
     justify-content: center;
-    padding: 10px;
 }
 .button-modal{
     background-color: #211F1F; 

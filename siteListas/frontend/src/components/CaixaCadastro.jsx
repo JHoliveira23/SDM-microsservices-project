@@ -28,10 +28,9 @@ export default function CaixaCadastro(){
       setEmail("");
       setSenha("");
    }catch (error) {
-      alert("Erro ao cadastrar usuário.");
-      console.error(error);
+      alert("Erro ao cadastrar usuário. O email inserido pode já estar cadastrado");
+      console.error(error); 
     }
- 
       }
     
     

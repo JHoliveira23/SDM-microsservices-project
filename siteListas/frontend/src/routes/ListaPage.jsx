@@ -1,6 +1,5 @@
 import "../styles/ListaPage.css";
 import "../styles/mainPage.css"
-import NavBar from "../components/NavBar";
 import { useParams, Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -57,7 +56,7 @@ export default function ListaPage(){
     if(list.jogos.length > 0) {
         gameCards = list.jogos.map((game) => {
             return(
-            <div className="catalogo" key={game._id}>
+                <div className="catalogo" key={game._id}>
                 <h2 className="jogos">{game.nome}</h2>
                 <img className="jogos" src={game.img} alt={game.nome} />
                 <p className="jogos">{game.desc}</p>
@@ -77,14 +76,13 @@ export default function ListaPage(){
         <div>
             <Link to="/minhaslistas"><button>Voltar para as minhas listas</button></Link>
             <div>
-            <NavBar></NavBar>
             <h1 className="listaPage">Lista {list.titulo}</h1>
             {gameCards}
             </div>
 
             {isActive && (
-                <div className="caixa">
-                        <div>Deseja realmente remover este jogo?</div>
+                <div className="modal">
+                        <div className="listapage-titulomodal">Deseja realmente remover este jogo?</div>
                         <button onClick={() => handleRemoveGame(jogoSelecionado)}>Remover</button>
                 </div>
                 )}

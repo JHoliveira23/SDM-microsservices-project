@@ -45,7 +45,7 @@ function autenticarToken(req, res, next){
 }
 
 //Rota POST para criar uma nova lista
-app.post("/lists", autenticarToken, async (req, res) => {
+app.post("/lists/criarcomjogo", autenticarToken, async (req, res) => {
   try {
     const {titulo, jogos} = req.body
     const usuario = req.user._id
@@ -58,6 +58,22 @@ app.post("/lists", autenticarToken, async (req, res) => {
     res.status(500).send({ error: "Erro ao criar a lista" });
   }
 });
+
+ //Rota POST para criar uma lista
+app.post("/lists", autenticarToken, async (req, res) => {
+  try {
+    const {titulo} = req.body
+    const usuario = req.user._id
+    
+    // Salva a lista no banco de dados
+    const list = new List({titulo, usuario});
+    await list.save();
+    res.status(201).send({ message: "Lista criada!", lista: list });
+  } catch (error) {
+    res.status(500).send({ error: "Erro ao criar a lista" });
+  }
+});
+
 app.get('/lists/:id', autenticarToken, async (req, res) => {
   
   

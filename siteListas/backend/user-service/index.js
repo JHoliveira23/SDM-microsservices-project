@@ -29,7 +29,13 @@ const User = mongoose.model("User", userSchema);
 app.post("/cadastro", async (req, res) => {
   
   try {
+
     const {nome, email, senha} = req.body
+    const usuarioExistente = await User.findOne({email})
+    if (usuarioExistente) {
+      return res.status(400).json({error: "E-mail já cadastrado"})
+    }
+
     const hashedSenha = await bcrypt.hash(senha, modificador);
 
     // Salva o usuário no banco de dados

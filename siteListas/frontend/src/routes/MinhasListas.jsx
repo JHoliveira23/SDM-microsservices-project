@@ -12,7 +12,9 @@ export default function MinhasListas(){
     const [lists, setLists] = useState([])
     const [listaSelecionada, setListaSelecionada] = useState()
     const [isActive, setIsActive] = useState(false)
-    
+    const [nomeNovaLista, setNomeNovaLista] = useState()
+
+
     const navigate = useNavigate();
     async function fetchListas() {
                     try {
@@ -52,16 +54,43 @@ export default function MinhasListas(){
         setIsActive(true)
         setListaSelecionada(listId)
     }
+
+    const createNewList = async(e) =>{
+            e.preventDefault() ;
+            
+            try{
+            // Monta o objeto usuário para enviar para o backend
+            const novaLista = {
+                titulo: nomeNovaLista,
+            }
+            const token = localStorage.getItem('token');
+            // Chama o List-Service para cadastrar usuário e gerar pedido
+            await axios.post("http://localhost:3003/lists/", 
+                novaLista, {headers:{Authorization: `Bearer ${token}`}});
+            
+            setNomeNovaLista("")
+            fetchListas();
+            alert("nova lista criada com sucesso");
+            }catch (error) {
+            alert("Erro ao criar a lista.");
+            console.error(error);
+        }
+        }
+
     return(
         <div>
-            <NavBar></NavBar>
-            <h1 className="minhasListas">Minhas Listas</h1>
-
+            <div className="minhaslistas-header">
+                <div className="minhaslistas-titulopagina">Minhas Listas</div>
+            </div>
+            <form className="minhaslistas-formulario" onSubmit={createNewList}>
+            <input type="text" placeholder="titulo da lista" value={nomeNovaLista} onChange={e => setNomeNovaLista(e.target.value)} />
+            <button type="submit">Criar nova lista</button>
+            </form>
             {lists.map((list) => (
                 <div className="catalogo" key={list._id}>
                     <button className="containerLista" onClick={() => navigate(`/minhaslistas/${list._id}`)}>
                         <button className="button-listas">
-                            <h2 className="jogos">{list.titulo}</h2> 
+                            <div className="minhaslistas-titulolistas">{list.titulo}</div> 
                         </button>  
                     </button>
                     <button className ="button-delete" onClick={() => abrirModalDeleteList(list._id)}>X</button>
@@ -71,9 +100,9 @@ export default function MinhasListas(){
         
         {isActive && (
                 <div className="modal">
-                        <div>Deseja excluir a lista permanentemente?</div>
-                        <button onClick={() => handleRemoveLista()}>Remover</button>
-                        <button onClick={() => {setIsActive(false)}}>X</button>
+                        <div className="minhaslistas-modaldelete">Deseja excluir a lista permanentemente?</div>
+                        <button onClick={() => handleRemoveLista()}>Confirmar</button>
+                        <button onClick={() => {setIsActive(false)}}>Cancelar</button>
                 </div>
                 )}
         </div>

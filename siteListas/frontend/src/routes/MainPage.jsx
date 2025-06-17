@@ -2,7 +2,7 @@
     import { Link, useNavigate } from "react-router-dom";
     import "../styles/MainPage.css"
     import axios from "axios"
-    import NavBar from "../components/NavBar"   
+ 
 
     export default function MainPage(){
 
@@ -85,7 +85,7 @@
             }
             const token = localStorage.getItem('token');
             // Chama o List-Service para cadastrar usuário e gerar pedido
-            await axios.post("http://localhost:3003/lists", 
+            await axios.post("http://localhost:3003/lists/criarcomjogo", 
                 novaLista, {headers:{Authorization: `Bearer ${token}`}});
             
             setNomeNovaLista("")
